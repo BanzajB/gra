@@ -16,20 +16,8 @@ int main() {
 
 	Gra gra;
 
-
-
-
-	// otwieranie okna
-	while (gra.running())
-	{
-		//Update
-		gra.update();
-
-		//Render
-		gra.render();
-
-
-	}
+	gra.run();
+	
 
 
 	return 0;

@@ -1,9 +1,7 @@
 #pragma once
+#include"gracz.h"
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <Windows.h>
+
 
 // Okno jako klasa / game engine
 //tworzymy funkcje
@@ -14,26 +12,39 @@ using namespace sf;
 class Gra
 {
 private:
-	//Private functions
-	void initVariable();
-	void initWindow();
+									//Private functions
+	//void initVariable();
+
+	void initWindow(); 
+	
+
+
+
 	//Variables
-		//Okno jako pointer
+							//Okno jako pointer
 	RenderWindow* window;
 	VideoMode videoMode;
 	Event ev;
 
+						//Gracz (wskaünik)
+	gracz* player;
+	void initPlayer();
+	
+
 
 public:
-	//Konstruktor  / Destruktor
+									//Konstruktor  / Destruktor
 	Gra();
 	virtual ~Gra();
 
 	//Accessors / Uøywane do pobierane danych z privte
-	const bool running() const;
+	//const bool running() const;
 
 
 	//Funkcje
+
+	
+	void run();
 	void pollEvents();
 	void update();
 	void render();
