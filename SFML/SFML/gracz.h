@@ -13,6 +13,8 @@ private:
 	sf::Sprite sprite;
 	sf::Texture texture;
 
+	float movementSpeed;
+
 					//PrivF
 
 	void initTexture();
@@ -25,6 +27,7 @@ public:
 
 
 					//Funkcje
+	void move(const float dirX, const float dirY);
 
 	void update();
 

@@ -16,7 +16,7 @@ void Gra::initWindow()
 {
 	//zamiast na twardo wymiary w RenderWidndow to mamy w zmiennych
 	this->videoMode.height = 1000;
-	this->videoMode.width = 1500;
+	this->videoMode.width = 1400;
 
 	this ->window = new RenderWindow(this->videoMode, "Space shootage");
 
@@ -93,6 +93,15 @@ void Gra::pollEvents()
 void Gra::update()
 {
 	this->pollEvents();
+
+	if(Keyboard::isKeyPressed(Keyboard::A))
+	this->player->move(-1.f, 0.f);
+	if (Keyboard::isKeyPressed(Keyboard::W))
+		this->player->move(0.f, -1.f);
+	if (Keyboard::isKeyPressed(Keyboard::D))
+		this->player->move(1.f, 0.f);
+	if (Keyboard::isKeyPressed(Keyboard::S))
+		this->player->move(0.f, 1.f);
 }
 
 void Gra::render()

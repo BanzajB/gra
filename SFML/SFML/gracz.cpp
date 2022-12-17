@@ -13,10 +13,16 @@ void gracz::initSprite()
 {
 	//Set a tekstura do sprajta
 	this->sprite.setTexture(this->texture); //kiedy u¿ywamy rectangleShape mo¿e byæ potrzeba u¿ycia & przed thiss w referencji
+
+	//ustawiamy wielkoœæ statku
+	this->sprite.scale(0.1f, 0.1f);
+
 }
 
 gracz::gracz()
 {
+	this->movementSpeed = 3.f;
+
 	this->initTexture();
 	this->initSprite();
 }
@@ -26,10 +32,13 @@ gracz::~gracz()
 }
 
 
-			//Funkcje
-void gracz::update()
+void gracz::move(const float dirX, const float dirY)
 {
+	this->sprite.move(this->movementSpeed *dirX, this->movementSpeed *dirY);
 }
+
+//Funkcje
+
 
 void gracz::render(sf::RenderTarget& target)
 {
