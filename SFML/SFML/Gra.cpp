@@ -35,6 +35,11 @@ void Gra::initPlayer()
 	this->player = new gracz();
 }
 
+void Gra::initTextures()
+{
+	
+}
+
 // Konstruktor 
 Gra::Gra()
 {
@@ -89,19 +94,30 @@ void Gra::pollEvents()
 	}
 }
 
-
-void Gra::update()
+void Gra::updateEvents()
 {
-	this->pollEvents();
+	
+}
 
-	if(Keyboard::isKeyPressed(Keyboard::A))
-	this->player->move(-1.f, 0.f);
+void Gra::updateInput()
+{
+	if (Keyboard::isKeyPressed(Keyboard::A))
+		this->player->move(-1.f, 0.f);
 	if (Keyboard::isKeyPressed(Keyboard::W))
 		this->player->move(0.f, -1.f);
 	if (Keyboard::isKeyPressed(Keyboard::D))
 		this->player->move(1.f, 0.f);
 	if (Keyboard::isKeyPressed(Keyboard::S))
 		this->player->move(0.f, 1.f);
+}
+
+
+void Gra::update()
+{
+	this->pollEvents();
+	this->updateInput();
+
+	
 }
 
 void Gra::render()
