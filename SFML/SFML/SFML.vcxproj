@@ -144,11 +144,13 @@
   <ItemGroup>
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="gracz.cpp" />
+    <ClCompile Include="Pocisk.cpp" />
     <ClCompile Include="SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gra.h" />
     <ClInclude Include="gracz.h" />
+    <ClInclude Include="Pocisk.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,7 @@
 #pragma once
-#include"gracz.h"
 
+#include<map>
+#include"gracz.h"
 
 
 // Okno jako klasa / game engine
@@ -26,10 +27,13 @@ private:
 	VideoMode videoMode;
 	Event ev;
 
+	//Resources
+	std::map<std::string, sf::Texture> textures;    //alokacja pamiêci, mapuje dwie cechy razem (dla ka¿dego stringa daje teksturê)
+
 						//Gracz (wskaŸnik)
 	gracz* player;
 	void initPlayer();
-	
+	void initTextures();
 
 
 public:
@@ -46,6 +50,8 @@ public:
 	
 	void run();
 	void pollEvents();
+	void updateEvents();
+	void updateInput();
 	void update();
 	void render();
 };

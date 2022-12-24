@@ -1,4 +1,6 @@
 # gra
  Projekt na przedmiot Informatyka II
 
-Dalszy opis gry będzie uaktualniony wraz z jej tworzeniem.
+Gra będzie w stylu space shooter.
+
+Gdzie będziemy musiali strzelać do pojawiających się przeciwników.
