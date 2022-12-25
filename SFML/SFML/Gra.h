@@ -2,6 +2,7 @@
 
 #include<map>
 #include"gracz.h"
+#include"Pocisk.h"
 
 
 // Okno jako klasa / game engine
@@ -28,10 +29,14 @@ private:
 	Event ev;
 
 	//Resources
-	std::map<std::string, sf::Texture> textures;    //alokacja pamiêci, mapuje dwie cechy razem (dla ka¿dego stringa daje teksturê)
+	std::map<std::string, Texture*> textures;    //alokacja pamiêci, mapuje dwie cechy razem (dla ka¿dego stringa daje teksturê)
+	std::vector<Pocisk*> pocisk;
+
 
 						//Gracz (wskaŸnik)
 	gracz* player;
+
+
 	void initPlayer();
 	void initTextures();
 
@@ -52,6 +57,7 @@ public:
 	void pollEvents();
 	void updateEvents();
 	void updateInput();
+	void updatePociski();
 	void update();
 	void render();
 };

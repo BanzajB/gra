@@ -14,7 +14,7 @@ void gracz::initSprite()
 	//Set a tekstura do sprajta
 	this->sprite.setTexture(this->texture); //kiedy u¿ywamy rectangleShape mo¿e byæ potrzeba u¿ycia & przed thiss w referencji
 
-	//ustawiamy wielkoœæ statku
+	//ustawiamy wielkoœæ statku (sprita)
 	this->sprite.scale(0.1f, 0.1f);
 
 }
@@ -29,6 +29,11 @@ gracz::gracz()
 
 gracz::~gracz()
 {
+}
+
+const sf::Vector2f& gracz::getPozycja() const   //pobieramy pozycjê statku
+{
+	return this->sprite.getPosition();
 }
 
 

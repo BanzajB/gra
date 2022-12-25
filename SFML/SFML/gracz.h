@@ -25,6 +25,9 @@ public:
 	gracz();
 	virtual ~gracz();
 
+	//Accessor
+	const sf::Vector2f& getPozycja() const;
+
 
 					//Funkcje
 	void move(const float dirX, const float dirY);

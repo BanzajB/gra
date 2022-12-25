@@ -20,8 +20,11 @@ private:
 
 public:
 	Pocisk();
-	Pocisk(sf::Texture& texture, float dx, float dy, float speed); // zmienne lokalne
+	Pocisk(sf::Texture* texture, float poz_x, float poz_y, float dx, float dy, float speed); // zmienne lokalne 
 	virtual ~Pocisk();
+
+	//Accesor                     by dostaæ siê do sekcji private ( funkcja get(granice))
+	const sf::FloatRect granice() const;
 
 	void update();
 	void render(sf::RenderTarget* target);
