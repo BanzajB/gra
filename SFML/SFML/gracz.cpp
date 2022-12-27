@@ -1,5 +1,13 @@
 #include "gracz.h"
 
+void gracz::initVariables()
+{
+	this->movementSpeed = 3.f;
+	this->reloadCooldownMax = 20.f;
+	this->reloadCooldown = this->reloadCooldownMax;
+
+}
+
 void gracz::initTexture()
 {
 	//Loud a teksture z pliku
@@ -21,8 +29,8 @@ void gracz::initSprite()
 
 gracz::gracz()
 {
-	this->movementSpeed = 3.f;
-
+	
+	this->initVariables();
 	this->initTexture();
 	this->initSprite();
 }
@@ -42,6 +50,35 @@ void gracz::move(const float dirX, const float dirY)
 	this->sprite.move(this->movementSpeed *dirX, this->movementSpeed *dirY);
 }
 
+const sf::FloatRect gracz::getObrys() const
+{
+	return this->sprite.getGlobalBounds();
+}
+
+const bool gracz::resetReload()
+{
+	if (this->reloadCooldown >= this->reloadCooldownMax)
+	{
+		this->reloadCooldown = 0.f;
+		return true;
+	}
+
+	return false;
+}
+
+void gracz::updateReload()
+{
+	if (this->reloadCooldown < this->reloadCooldownMax)
+		this->reloadCooldown += 1.f;
+}
+
+
+
+void gracz::update()
+{
+	this->updateReload();
+}
+
 //Funkcje
 
 
@@ -49,3 +86,7 @@ void gracz::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
 }
+
+
+
+

@@ -15,8 +15,12 @@ private:
 
 	float movementSpeed;
 
+	float reloadCooldown;
+	float reloadCooldownMax;
+
 					//PrivF
 
+	void initVariables();
 	void initTexture();
 	void initSprite();
 
@@ -27,11 +31,15 @@ public:
 
 	//Accessor
 	const sf::Vector2f& getPozycja() const;
+	const sf::FloatRect getObrys() const;
 
 
 					//Funkcje
 	void move(const float dirX, const float dirY);
 
+	const bool resetReload();
+
+	void updateReload();
 	void update();
 
 	//do renderowania sprita

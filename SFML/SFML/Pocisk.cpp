@@ -23,11 +23,11 @@ Pocisk:: ~Pocisk()
 
 }
 
-//Accesor
+//Accessor
 
-const sf::FloatRect Pocisk::granice() const
+const sf::FloatRect Pocisk::getObrysPck() const
 {
-	return this->shape.getGlobalBounds();
+	return this->shape.getGlobalBounds();            //dostajemy po³o¿enie pocisków
 }
 
 void Pocisk::update()

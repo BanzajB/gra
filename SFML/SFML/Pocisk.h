@@ -24,7 +24,7 @@ public:
 	virtual ~Pocisk();
 
 	//Accesor                     by dostaæ siê do sekcji private ( funkcja get(granice))
-	const sf::FloatRect granice() const;
+	const sf::FloatRect getObrysPck() const;     //const nie zmienia obiektu funkcji ( only to read function)
 
 	void update();
 	void render(sf::RenderTarget* target);
