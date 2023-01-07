@@ -2,9 +2,12 @@
 
 #include<time.h>
 #include<map>
+#include<string>
+#include<sstream>
 #include"gracz.h"
 #include"Pocisk.h"
 #include"Przeciwnik.h"
+#include"Menu.h"
 
 
 // Okno jako klasa / game engine
@@ -34,11 +37,30 @@ private:
 
 	//GUI
 	Font czcionka;
-	Text Punkt_txt;
+	Text Punkty_txt;
 
+	Text GameOver_txt;
+
+
+	//T≥o
+	sf::Texture Tlo;
+	sf::Sprite TloSprite;
+
+	//Punktacja
+	unsigned points;
+
+	//Menu
+
+	int pozycja = 0;
+	Menu* menu;
 
 						//Gracz (wskaünik)
 	gracz* player;
+
+					// GUI gracza -  øycie
+	sf::RectangleShape playerHpBar;
+	sf::RectangleShape playerHpBarTlo;
+
 
 	//Przeciwnicy
 
@@ -52,6 +74,9 @@ private:
 	void initPlayer();
 	void initTextures();
 	void initGUI();
+	void initTlo();
+	void initPunktacja();
+
 	void initPrzeciwnicy();
 
 
@@ -73,12 +98,17 @@ public:
 	//void cooldown(int seconds);
 	void updateEvents();
 	void updateInput();
+
 	void updateGUI();
+	void updateTlo();
+	void updateKolizja();
+
 	void updatePociski();
 	void updatePrzeciwnicy();
 	void update();
 
 	void renderGUI();
+	void renderTlo();
 	void render();
 };
 

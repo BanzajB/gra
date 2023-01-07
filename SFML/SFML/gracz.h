@@ -18,11 +18,18 @@ private:
 	float reloadCooldown;
 	float reloadCooldownMax;
 
+
+	int hp;
+	int hpMax;
+
+
+
 					//PrivF
 
 	void initVariables();
 	void initTexture();
 	void initSprite();
+
 
 public:
 
@@ -32,6 +39,18 @@ public:
 	//Accessor
 	const sf::Vector2f& getPozycja() const;
 	const sf::FloatRect getObrys() const;
+
+	const int& getHp() const;
+	const int& getHpMax() const;
+
+
+	//Modifiers
+	void setPozycja(const sf::Vector2f poz);
+	void setPozycja(const float x, const float y);
+
+	void setHp(const int hp);
+	void loseHp(const int value);
+
 
 
 					//Funkcje

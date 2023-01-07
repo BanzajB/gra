@@ -3,8 +3,12 @@
 void gracz::initVariables()
 {
 	this->movementSpeed = 3.f;
+
 	this->reloadCooldownMax = 20.f;
 	this->reloadCooldown = this->reloadCooldownMax;
+
+	this->hpMax = 50;
+	this-> hp = this->hpMax;
 
 }
 
@@ -39,23 +43,33 @@ gracz::~gracz()
 {
 }
 
-const sf::Vector2f& gracz::getPozycja() const   //pobieramy pozycjê statku
+const int& gracz::getHp() const
+{
+	return hp;
+}
+
+const int& gracz::getHpMax() const
+{
+	return this->hpMax;
+}
+
+const sf::Vector2f& gracz::getPozycja() const										 //pobieramy pozycjê statku
 {
 	return this->sprite.getPosition();
 }
 
 
-void gracz::move(const float dirX, const float dirY)
+void gracz::move(const float dirX, const float dirY)								//ruch
 {
 	this->sprite.move(this->movementSpeed *dirX, this->movementSpeed *dirY);
 }
 
-const sf::FloatRect gracz::getObrys() const
+const sf::FloatRect gracz::getObrys() const										//granice sprita
 {
 	return this->sprite.getGlobalBounds();
 }
 
-const bool gracz::resetReload()
+const bool gracz::resetReload()													//prze³adowanie 
 {
 	if (this->reloadCooldown >= this->reloadCooldownMax)
 	{
@@ -72,6 +86,39 @@ void gracz::updateReload()
 		this->reloadCooldown += 1.f;
 }
 
+//const bool gracz::resetReload()
+//{
+//	return false;
+//}
+
+
+//Modifiers
+
+
+void gracz::setPozycja(const sf::Vector2f poz)                            //Pozycja
+{
+	this->sprite.setPosition(poz);
+}
+
+void gracz::setPozycja(const float x, const float y)						//Pozycja drugi sposób
+{
+	this->sprite.setPosition(x, y);
+}
+
+
+
+
+void gracz::setHp(const int hp)
+{
+	this->hp = hp;
+}
+
+void gracz::loseHp(const int value)
+{
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
 
 
 void gracz::update()
