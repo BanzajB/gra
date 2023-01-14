@@ -8,6 +8,7 @@
 #include"Pocisk.h"
 #include"Przeciwnik.h"
 #include"Menu.h"
+#include"Exit.h"
 
 
 // Okno jako klasa / game engine
@@ -31,12 +32,13 @@ private:
 	VideoMode videoMode;
 	Event ev;
 
-	//Resources
+	//Resources  Pociski
 	std::map<std::string, Texture*> textures;    //alokacja pamiêci, mapuje dwie cechy razem (dla ka¿dego stringa daje teksturê)
 	std::vector<Pocisk*> pocisk;
 
 	//GUI
 	Font czcionka;
+	Font czcionkav2;  //ta bez linii
 	Text Punkty_txt;
 
 	Text GameOver_txt;
@@ -51,9 +53,15 @@ private:
 
 	//Menu
 
+	//bool wcisk();
 	int pozycja = 0;
-	Menu* menu;
+	Menu*menu;
 
+	//Help
+	Text Help_txt;
+
+	//Exit
+	Exit* exit;
 						//Gracz (wskaŸnik)
 	gracz* player;
 
@@ -76,6 +84,7 @@ private:
 	void initGUI();
 	void initTlo();
 	void initPunktacja();
+	void initMenu();
 
 	void initPrzeciwnicy();
 
@@ -106,6 +115,10 @@ public:
 	void updatePociski();
 	void updatePrzeciwnicy();
 	void update();
+
+	
+	void renderMenu();
+	void renderExit();
 
 	void renderGUI();
 	void renderTlo();

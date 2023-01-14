@@ -5,6 +5,7 @@
 
 #include "Gra.h"
 #include<time.h>
+#include<locale.h>
 
 using namespace std;
 using namespace sf;
@@ -14,6 +15,7 @@ using namespace sf;
 int main() {
 
 	srand(time(NULL));
+	setlocale(LC_CTYPE, "Polish");
 	
 	//Init Game engine / Okno
 

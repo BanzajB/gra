@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Exit.cpp" />
     <ClCompile Include="Gra.cpp" />
     <ClCompile Include="gracz.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Exit.h" />
     <ClInclude Include="Gra.h" />
     <ClInclude Include="gracz.h" />
     <ClInclude Include="Menu.h" />

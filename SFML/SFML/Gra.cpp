@@ -48,6 +48,10 @@ void Gra::initGUI()
 	if(!this->czcionka.loadFromFile("textures/PixelFlag.ttf"))
 	std::cout << "ERROR nie uda³o siê zaladowaæ czcionki! " << std::endl;
 
+	//Czcionkav2
+	if (!this->czcionkav2.loadFromFile("textures/pixelmix.ttf"))
+		std::cout << "ERROR nie uda³o siê zaladowaæ czcionki! " << std::endl;
+
 	// Init tekstu do punktów
 	this->Punkty_txt.setFont(this->czcionka);
 	this->Punkty_txt.setCharacterSize(30);
@@ -72,6 +76,23 @@ void Gra::initGUI()
 	this->playerHpBarTlo = this->playerHpBar;
 	this->playerHpBarTlo.setFillColor(sf::Color(40, 70, 200, 100));
 	//this->playerHpBarTlo.setPosition();
+
+	//Menu
+	this->menu = new Menu(window->getSize().x, window->getSize().y);
+
+	//Help (me!)
+	this->Help_txt.setFont(this->czcionkav2);
+	this->Help_txt.setCharacterSize(20);
+	this->Help_txt.setOutlineThickness(1);
+	this->Help_txt.setOutlineColor(sf::Color::White);
+	this->Help_txt.setFillColor(sf::Color::Black);
+	this->Help_txt.setString("/Przykladowa instrukcja\n         do gry/");
+	this->Help_txt.setPosition(
+		this->window->getSize().x / 2.f - this->Help_txt.getGlobalBounds().width / 2.f,
+		this->window->getSize().y / 2.f - this->Help_txt.getGlobalBounds().height / 2.f);
+
+	//Exit
+	this->exit = new Exit(window->getSize().x, window->getSize().y);
 }
 
 void Gra::initTlo()
@@ -150,11 +171,42 @@ void Gra::run()										         // odpalanie gry
 	while (this->window->isOpen())
 	{
 		this->pollEvents();
+		 
+		// casey eventów
+		switch (pozycja) {
+		case 0:
+			//this->updateEvents();				//Menu
+			this->renderMenu();
+			
+			break;
+		
+		case 1:
+			if (this->player->getHp() > 0)			//Gra
+				this->update();
 
-		if(this->player->getHp() > 0)         //zatrzymanie gry na skutek utraty ¿ycia
-		this->update();
+			this->render();
 
-		this->render();
+			break;
+
+		case 2:
+		//	this->window->clear();
+			this->window->draw(this->Help_txt);		//Help
+			
+			this->window->display();
+
+			break;
+
+		case 3:
+			this->renderExit();						//Exit
+			break;
+		}
+
+	//	this->renderMenu();
+	//
+	//	if(this->player->getHp() > 0 )         //zatrzymanie gry na skutek utraty ¿ycia
+	//	this->update();
+	//
+	//	this->render();
 	}
 }
 
@@ -171,15 +223,101 @@ void Gra::pollEvents()
 		case Event::KeyPressed:
 			if (this ->ev.key.code == Keyboard::J)
 				this->window->close();
+
+
+			//Exit
+
+			if (this->ev.key.code == Keyboard::Escape)
+			{
+				this->pozycja = 3;
+			}
+		
+			//Powrót do Menu
+
+			if (this->ev.key.code == Keyboard::K)
+				this->pozycja = 0;
+			
+			//Help
+			if (this->ev.key.code == Keyboard::F1)
+				this->pozycja = 2;
+
 			break;
 
 			//Menu
+		
 		case Event::KeyReleased:
-			if (this->ev.key.code == Keyboard::Up) 
+
+			if (this->ev.key.code == Keyboard::F1)
+				this->pozycja = 1;
+
+			switch (pozycja)
 			{
-				pozycja--;
-				if (pozycja < 0) pozycja = this->pozycja->
-			}
+				case 0:                                           //gdy pozycja zero to mamy menu
+					if (this->ev.key.code == Keyboard::Up)
+						this->menu->MoveUp();
+
+					if (this->ev.key.code == Keyboard::Down)
+						this->menu->MoveDown();
+
+					if (this->ev.key.code == Keyboard::Return)
+					{
+						switch (this->menu->getWybrane())             //Wybieramy pozycjê z Menu
+						{
+							case 0:
+							{
+								std::cout << "Wybrano 'Graj' " << std::endl;
+								pozycja = 1;
+
+								break;
+							}
+							case 1:
+							{
+								std::cout << "Wybrano 'Opcje' " << std::endl;
+								break;
+							}
+							case 2:
+							{
+								std::cout << "Wybrano 'Wyjscie' " << std::endl;
+								this->window->close();
+								break;
+							}
+						}
+					}break;
+					
+			//Exit
+
+				case 3:
+					if (this->ev.key.code == Keyboard::Left)
+						this->exit->MoveUp();
+
+					if (this->ev.key.code == Keyboard::Right)
+						this->exit->MoveDown();
+
+					if (this->ev.key.code == Keyboard::Return)
+					{
+						switch (this->exit->getWybrane())             //Wybieramy pozycjê z Menu Exit
+						{
+							case 0:
+							{
+								std::cout << "Wybrano 'Graj dalej' " << std::endl;
+								pozycja = 1;
+
+								break;
+							}
+							case 1:
+							{
+								std::cout << "Wybrano 'Wyjdz' " << std::endl;
+								this->window->close();
+								break;
+							}
+						}
+
+					}break;
+				
+			}	 
+
+
+		break;
 		}
 
 
@@ -198,9 +336,14 @@ void Gra::pollEvents()
 }
 */
 
+bool wcisk()
+{
+	return sf::Keyboard::isKeyPressed(sf::Keyboard::F1);
+}
+
 void Gra::updateEvents()
 {
-	
+		
 }
 
 void Gra::updateInput()
@@ -387,6 +530,21 @@ void Gra::update()             //wa¿na kolejnoœæ
 ///                     renderowanie 
 /// </summary>
 
+void Gra::renderMenu()            // Renderowanie Menu
+{
+	this->window->clear();
+	this->renderTlo();
+	this->menu->draw(*this->window);
+	this->window->display();
+}
+
+void Gra::renderExit()
+{
+	this->exit->draw(*this->window);
+	this->window->display();
+}
+
+
 void Gra::renderGUI()
 {
 	this->window->draw(this->Punkty_txt);
@@ -400,11 +558,17 @@ void Gra::renderTlo()
 	this->window->draw(this->TloSprite);
 }
 
+
+
+
 void Gra::render()
 {
 	this->window->clear();
 
 	this->renderTlo();     //T³o
+
+	//this->renderMenu();
+
 
 	//tu bêdziemy rysowaæ grê
 

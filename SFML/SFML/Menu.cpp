@@ -1,5 +1,102 @@
 #include "Menu.h"
 
+Menu::Menu(float width, float height)
+{
+	if (!font.loadFromFile("textures/pixelmix.ttf"))
+	{
+		std::cout << " ERROR: Nie laduje sie czcionka menu " << std::endl;
+	}
+
+	if (!fontv2.loadFromFile("textures/pixelsix14.ttf"))
+	{
+		std::cout << " ERROR: Nie laduje sie czcionka menu " << std::endl;
+	}
+
+
+	this->Tytol.setFont(fontv2);
+	this->Tytol.setCharacterSize(120);
+	this->Tytol.setFillColor(sf::Color(4, 225, 247, 200));
+	this->Tytol.setString(" SPACE \nSHOOTER");
+	this->Tytol.setPosition(sf::Vector2f(width / 10, height /3));
+
+	this->menu_txt[0].setFont(font);
+	this->menu_txt[0].setFillColor(sf::Color::Yellow);
+	this->menu_txt[0].setString("==GRAJ==");
+	this->menu_txt[0].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL +1) * 1));
+
+	this->menu_txt[1].setFont(font);
+	this->menu_txt[1].setFillColor(sf::Color::White);
+	this->menu_txt[1].setString("==OPCJE==");
+	this->menu_txt[1].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL + 1) * 2));
+
+	this->menu_txt[2].setFont(font);
+	this->menu_txt[2].setFillColor(sf::Color::White);
+	this->menu_txt[2].setString("==WYJSCIE==");
+	this->menu_txt[2].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL + 1) * 3));
+
+	wybrane = 0;
+}
+
+Menu::~Menu()
+{
+
+}
+
+void Menu::draw(sf::RenderWindow &window)
+{
+	window.draw(Tytol);
+
+	for (int i = 0; i < MAX_LICZBA_POL; i++)
+	{
+		window.draw(menu_txt[i]);
+	}
+}
+
+void Menu::MoveUp()
+{
+	if (wybrane - 1 >= 0)
+	{
+		menu_txt[wybrane].setFillColor(sf::Color::White);
+		wybrane--;
+		menu_txt[wybrane].setFillColor(sf::Color::Yellow);
+	}
+}
+
+void Menu::MoveDown()
+{
+	if (wybrane + 1 < MAX_LICZBA_POL)
+	{
+		menu_txt[wybrane].setFillColor(sf::Color::White);
+		wybrane++;
+		menu_txt[wybrane].setFillColor(sf::Color::Yellow);
+	}
+}
+
+int Menu::getWybrane()
+{
+	return wybrane;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //void Menu::initFont()
 //{
 //	if (!this->czcionka.loadFromFile("textures/pixelmix.ttf"))
