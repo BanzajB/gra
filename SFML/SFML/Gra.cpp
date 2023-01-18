@@ -33,6 +33,8 @@ void Gra::initWindow()
 void Gra::initPlayer()
 {
 	this->player = new gracz();
+	this->player->setPozycja(this->window->getSize().x / 2.f,
+		this->window->getSize().y / 2.f );
 
 }
 
@@ -93,6 +95,15 @@ void Gra::initGUI()
 
 	//Exit
 	this->exit = new Exit(window->getSize().x, window->getSize().y);
+
+	//Opcje
+	this->opcje = new Opcje(window->getSize().x, window->getSize().y);
+
+	//Plik
+	this->plik = new Plik(window->getSize().x, window->getSize().y);
+
+	//Trudnoœæ
+	this->tryb = new Tryb(window->getSize().x, window->getSize().y);
 }
 
 void Gra::initTlo()
@@ -134,6 +145,12 @@ Gra::~Gra()
 	delete this->window;
 	delete this->player;
 
+	delete this->menu;
+	delete this->exit;
+	delete this->opcje;
+	delete this->tryb;
+	delete this->plik;
+
 	//Kasowanie tekstur
 
 	for (auto  &i : this->textures)  //równoczeœnie z deklaracj¹ nastêpuje inicjalizacja zmiennej wartoœci¹ (auto - samo decyduje o typie zmienniej)
@@ -161,9 +178,85 @@ Gra::~Gra()
 }
 */
 
+/// <summary>
+///                                 Plik
+/// </summary>
 
+void Gra::zapisStruct(int nr)
+{
+	
+
+	int i = nr - 1;
+		std::cout << "Wprowadz nick dla gracza nr:  " << nr << " name: ";
+		std::cin >> users[i].name;
+
+		
+		users[i].pkt = this->points;
+
+		
+		users[i].Hp = this->player->getHp();
+
+	//	users[i].pozm = poziom;
+}
+
+void Gra::pobranieStruct(int nr)
+{
+	//std::stringstream ss;
+
+	int i = nr - 1;
+	std::cout << "Nick gracza " << nr <<"  "<< users[i].name << std::endl;
+
+	this->points = users[i].pkt;
+	//ss << "Punkty:  " << this->points;
+	//this->Punkty_txt.setString(ss.str());
+
+
+	this->player->setHp(users[i].Hp);
+}
+
+
+
+
+void Gra::zapis(User users[], int nr, std::string file)
+{
+	std::ofstream outFile;
+	outFile.open(file);
+
+	if (outFile.good() == true) {
+		std::cout << "Otwarto plik!" << std::endl;
+
+		int i = nr - 1;
+			outFile  << users[i].name << " " << users[i].pkt << " " << users[i].Hp << std::endl;
+		
+
+		outFile.close();
+		std::cout << "Data written to file successfully!" << std::endl;
+	}
+	else std::cout << "NIe uda³o siêotworzyæ pliku" << std::endl;
+}
+
+void Gra::odczyt(User users[], int nr, std::string file)
+{
+	std::ifstream inFile;
+	inFile.open(file);
+
+	if (inFile.good() == true) {
+		std::cout << "Otwarto plik!" << std::endl;
+
+		int i = nr - 1;
+		inFile >> users[i].name >> users[i].pkt >> users[i].Hp;
+			
+		
+
+		inFile.close();
+		std::cout << "Data read from file successfully!" << std::endl;
+	}
+	else std::cout << "NIe uda³o siêotworzyæ pliku" << std::endl;
+}
 
 //Functions														==============================================================
+
+
 
 
 void Gra::run()										         // odpalanie gry
@@ -181,25 +274,40 @@ void Gra::run()										         // odpalanie gry
 			break;
 		
 		case 1:
+
 			if (this->player->getHp() > 0)			//Gra
 				this->update();
 
 			this->render();
-
 			break;
 
 		case 2:
-		//	this->window->clear();
-			this->window->draw(this->Help_txt);		//Help
-			
-			this->window->display();
+			this->renderHelp();
 
 			break;
 
 		case 3:
 			this->renderExit();						//Exit
 			break;
+
+		case 4:
+			this->renderOpcje();						//Opcje
+			break;
+
+		case 5:
+			this->renderPlik();						//Plik
+			break;
+
+		case 6:
+			this->renderTryb();						//Trudnosc
+			break;
+
+
+
+
 		}
+
+
 
 	//	this->renderMenu();
 	//
@@ -238,82 +346,59 @@ void Gra::pollEvents()
 				this->pozycja = 0;
 			
 			//Help
+		if(pozycja == 1)
 			if (this->ev.key.code == Keyboard::F1)
 				this->pozycja = 2;
 
 			break;
 
-			//Menu
+
+
+
+			
 		
 		case Event::KeyReleased:
 
+
+			//Help
+		if(pozycja == 2)
 			if (this->ev.key.code == Keyboard::F1)
 				this->pozycja = 1;
 
+
 			switch (pozycja)
 			{
-				case 0:                                           //gdy pozycja zero to mamy menu
-					if (this->ev.key.code == Keyboard::Up)
-						this->menu->MoveUp();
+			//Menu
 
-					if (this->ev.key.code == Keyboard::Down)
-						this->menu->MoveDown();
-
-					if (this->ev.key.code == Keyboard::Return)
-					{
-						switch (this->menu->getWybrane())             //Wybieramy pozycjê z Menu
-						{
-							case 0:
-							{
-								std::cout << "Wybrano 'Graj' " << std::endl;
-								pozycja = 1;
-
-								break;
-							}
-							case 1:
-							{
-								std::cout << "Wybrano 'Opcje' " << std::endl;
-								break;
-							}
-							case 2:
-							{
-								std::cout << "Wybrano 'Wyjscie' " << std::endl;
-								this->window->close();
-								break;
-							}
-						}
-					}break;
+				case 0:                                           
+					this->updateMenu();
+					break;
 					
 			//Exit
 
 				case 3:
-					if (this->ev.key.code == Keyboard::Left)
-						this->exit->MoveUp();
-
-					if (this->ev.key.code == Keyboard::Right)
-						this->exit->MoveDown();
-
-					if (this->ev.key.code == Keyboard::Return)
-					{
-						switch (this->exit->getWybrane())             //Wybieramy pozycjê z Menu Exit
-						{
-							case 0:
-							{
-								std::cout << "Wybrano 'Graj dalej' " << std::endl;
-								pozycja = 1;
-
-								break;
-							}
-							case 1:
-							{
-								std::cout << "Wybrano 'Wyjdz' " << std::endl;
-								this->window->close();
-								break;
-							}
-						}
-
-					}break;
+					this->updateExit();
+					break;
 				
+
+			//Opcje
+
+				case 4:
+					this->updateOpcje();
+					
+					break;
+
+			//Plik
+
+				case 5:
+					this->updatePlik();
+					break;
+
+			//Trudnosc
+				case 6:
+					
+					this->updateTryb();
+					break;
 			}	 
 
 
@@ -323,6 +408,8 @@ void Gra::pollEvents()
 
 	}
 }
+
+
 
 /*void Gra::cooldown(int seconds)
 {
@@ -336,10 +423,7 @@ void Gra::pollEvents()
 }
 */
 
-bool wcisk()
-{
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::F1);
-}
+
 
 void Gra::updateEvents()
 {
@@ -434,8 +518,26 @@ void Gra::updatePrzeciwnicy()
 	this->spawnTimer += 0.5f;                                        //przeciwnicy ci¹gle siê pojawiaj¹ 
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-		this->przeciwnicy.push_back(new Przeciwnik(rand()% (this->window->getSize().x) -50.f, -100.f));
-		this->spawnTimer = 0.f;
+		if (this->poziom == 1 || this->poziom == 2 || this->poziom == 3)
+		{
+			this->przeciwnicy.push_back(new Przeciwnik(rand() % (this->window->getSize().x) - 50.f, -100.f));
+			this->spawnTimer = 0.f;
+		}
+
+		if (this->poziom == 2 || this->poziom == 3)
+		{
+			this->przeciwnicy.push_back(new Przeciwnik(rand() % (this->window->getSize().x) - 50.f, -100.f));
+			this->spawnTimer = 0.f;
+		}
+
+		if(this->poziom == 3)
+		{
+			this->przeciwnicy.push_back(new Przeciwnik(rand() % (this->window->getSize().x) - 50.f, -100.f));
+			this->spawnTimer = 0.f;
+
+			
+		}
+
 	}
 
 	/* if (1 > 0)
@@ -464,6 +566,8 @@ void Gra::updatePrzeciwnicy()
 			if (this->pocisk[k]->getObrysPck().intersects(this->przeciwnicy[i]->getObrys()))
 			{
 				this->points += this->przeciwnicy[i]->getPunkty();            //getPunkty zwraca wartoœc punktów za przeciwnika 
+				
+					
 
 				delete this->pocisk[k];
 				this->pocisk.erase(this->pocisk.begin() + k);
@@ -501,10 +605,261 @@ void Gra::updatePrzeciwnicy()
 				this->przeciwnicy.erase(this->przeciwnicy.begin() + i);
 				przeciwnik_erased = true;
 				
-			}								
+			}	
+			
+
 		}
 	}
 }
+
+
+void Gra::updateMenu()
+{
+	if (this->ev.key.code == Keyboard::Up)
+		this->menu->MoveUp();
+
+	if (this->ev.key.code == Keyboard::Down)
+		this->menu->MoveDown();
+
+	if (this->ev.key.code == Keyboard::Return)
+	{
+		switch (this->menu->getWybrane())             //Wybieramy pozycjê z Menu
+		{
+		case 0:
+		{
+			std::cout << "Wybrano 'NOWA GRA' " << std::endl;
+
+			
+			
+			//this->initTextures();
+			
+			this->initPunktacja();
+			this->initPlayer();
+			this->initPrzeciwnicy();
+
+			
+			
+			pozycja = 6;
+
+
+			break;
+		}
+		case 1:
+		{
+			std::cout << "Wybrano 'KONTYNUUJ' " << std::endl;
+			pozycja = 1;
+
+			break;
+		}
+		case 2:
+		{
+			std::cout << "Wybrano 'Opcje' " << std::endl;
+			pozycja = 4;
+			break;
+		}
+		case 3:
+		{
+			std::cout << "Wybrano 'Wyjscie' " << std::endl;
+			this->window->close();
+			break;
+		}
+		}
+	}
+}
+
+
+void Gra::updateExit()
+{
+	if (this->ev.key.code == Keyboard::Left)
+		this->exit->MoveUp();
+
+	if (this->ev.key.code == Keyboard::Right)
+		this->exit->MoveDown();
+
+	if (this->ev.key.code == Keyboard::Return)
+	{
+		switch (this->exit->getWybrane())             //Wybieramy pozycjê z Menu Exit
+		{
+		case 0:
+		{
+			std::cout << "Wybrano 'Graj dalej' " << std::endl;
+			pozycja = 1;
+
+			break;
+		}
+		case 1:
+		{
+			std::cout << "Wybrano 'Wyjdz' " << std::endl;
+			this->window->close();
+			break;
+		}
+		}
+
+	}
+}
+
+
+void Gra::updateOpcje()
+{
+	if (this->ev.key.code == Keyboard::Up)
+		this->opcje->MoveUp();
+
+	if (this->ev.key.code == Keyboard::Down)
+		this->opcje->MoveDown();
+
+	if (this->ev.key.code == Keyboard::Return)
+	{
+		switch (this->opcje->getWybrane())           //Wybieramy pozycjê z Menu Opcji
+		{
+		case 0:
+		{
+			std::cout << "Wybrano 'Zapis' " << std::endl;
+			flag = true;
+			pozycja = 5;
+			
+			break;
+		}
+		case 1:
+		{
+			std::cout << "Wybrano 'Wczytaj' " << std::endl;
+			flag = false;
+			pozycja = 5;
+			break;
+		}
+		case 2:
+		{
+			std::cout << "Wybrano 'Trudnosc' " << std::endl;
+			pozycja = 6;
+			break;
+		}
+
+
+		}
+
+	}
+}
+
+
+
+void Gra::updatePlik()
+{
+	if (this->ev.key.code == Keyboard::Up)
+		this->plik->MoveUp();
+
+	if (this->ev.key.code == Keyboard::Down)
+		this->plik->MoveDown();
+
+	if (this->ev.key.code == Keyboard::Return)
+	{
+		switch (this->plik->getWybrane())           //Wybieramy pozycjê z Menu Opcji
+		{
+		case 0:
+		{
+			std::cout << "Wybrano 'Zapis 1' " << std::endl;
+			
+			if(flag)
+			{
+				this->zapisStruct(1);
+				this->zapis(users, 1, "textures/users.txt");
+			}
+			else{
+				this->odczyt(users, 1, "textures/users.txt");
+				this->pobranieStruct(1);
+				pozycja = 6;
+			}
+			break;
+		}
+		case 1:
+		{
+			std::cout << "Wybrano 'Zapis 2' " << std::endl;
+			if (flag)
+			{
+				this->zapisStruct(2);
+				this->zapis( users, 2, "textures/users2.txt");
+			}
+			else {
+				this->odczyt(users, 2, "textures/users2.txt");
+				this->pobranieStruct(2);
+				pozycja = 6;
+			}
+			break;
+		}
+		case 2:
+		{
+			std::cout << "Wybrano 'Zapis 3' " << std::endl;
+			if (flag)
+			{
+				this->zapisStruct(3);
+				this->zapis(users, 3 , "textures/users3.txt");
+			}
+			else {
+				this->odczyt(users, 3, "textures/users3.txt");
+				this->pobranieStruct(3);
+				pozycja = 6;
+			}
+			break;
+		}
+		}
+	}
+}
+
+void Gra::updateTryb()
+{
+	if (this->ev.key.code == Keyboard::Left)
+		this->tryb->MoveUp();
+
+	if (this->ev.key.code == Keyboard::Right)
+		this->tryb->MoveDown();
+
+	if (this->ev.key.code == Keyboard::Return)
+	{
+		switch (this->tryb->getWybrane())             
+		{
+		case 0:
+		{
+			std::cout << "Wybrano 'Latwy' " << std::endl;
+
+			this->spawnTimerMax = 50.f;
+			this->player->setSpeed(3.f);
+			this->player->setReload(20.f);
+
+			poziom = 1;
+			pozycja = 1;
+			
+
+			break;
+		}
+		case 1:
+		{
+			std::cout << "Wybrano 'Sredni' " << std::endl; //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+			this->player->setReload(30.f);
+			this->spawnTimerMax = 30.f;
+			poziom = 2;
+
+			pozycja = 1;
+			break;
+		}
+		case 2:
+		{
+			std::cout << "Wybrano 'Trudny' " << std::endl;
+
+			this->spawnTimerMax =20.f ;       // bazowo 50.f
+			this->player->setSpeed(2.1f);       // bazowa prêdkoœæ = 3.f
+			this->player->setReload(50.f);			//bazowo 20.f
+
+			poziom = 3;
+
+			pozycja = 1;
+			break;
+		}
+		}
+
+	}
+}
+
+
+
 
 
 void Gra::update()             //wa¿na kolejnoœæ
@@ -538,11 +893,50 @@ void Gra::renderMenu()            // Renderowanie Menu
 	this->window->display();
 }
 
+void Gra::renderHelp()
+{
+	//	this->window->clear();
+	this->window->draw(this->Help_txt);		
+
+	this->window->display();
+}
+
 void Gra::renderExit()
 {
+	this->window->clear();
+	this->renderTlo();
 	this->exit->draw(*this->window);
 	this->window->display();
 }
+
+void Gra::renderOpcje()   
+{
+	this->window->clear();
+	this->renderTlo();
+	this->opcje->draw(*this->window);
+	this->window->display();
+}
+
+void Gra::renderPlik()
+{
+	this->window->clear();
+	this->renderTlo();
+	this->plik->draw(*this->window);
+	this->window->display();
+
+}
+
+void Gra::renderTryb()
+{
+	this->window->clear();
+	this->renderTlo();
+	this->tryb->draw(*this->window);
+	this->window->display();
+
+}
+
+
+
 
 
 void Gra::renderGUI()
@@ -592,3 +986,4 @@ void Gra::render()
 
 	this->window->display();
 }
+

@@ -7,23 +7,29 @@
 
 #include <iostream>
 
-#define MAX_LICZBA_POL 2
+#define MAX_LICZBA_POL 3
 
-class Exit
+class Plik
 {
 private:
+
+
+
 	int wybrane;
 	sf::Font font;
-	sf::Text exit_txt[MAX_LICZBA_POL];
+	sf::Text plik_txt[MAX_LICZBA_POL];
+
+	sf::Font fontv2;
+	sf::Text Tytol;
 
 public:
-	Exit(float width, float height);
-	
-	virtual ~Exit();
+	Plik(float width, float height);
+
+	virtual ~Plik();
 
 	void draw(sf::RenderWindow& window);
 	void MoveUp();
 	void MoveDown();
 	int getWybrane();   //do wybierania pól
-};
 
+};

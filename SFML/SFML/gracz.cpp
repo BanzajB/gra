@@ -31,6 +31,10 @@ void gracz::initSprite()
 
 }
 
+
+
+
+
 gracz::gracz()
 {
 	
@@ -118,6 +122,16 @@ void gracz::loseHp(const int value)
 	this->hp -= value;
 	if (this->hp < 0)
 		this->hp = 0;
+}
+
+void gracz::setSpeed(const float speed)
+{
+	this->movementSpeed = speed;
+}
+
+void gracz::setReload(const float a)
+{
+	this->reloadCooldownMax = a;
 }
 
 

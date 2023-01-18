@@ -29,6 +29,7 @@ private:
 	void initVariables();
 	void initTexture();
 	void initSprite();
+	//void initPsition();
 
 
 public:
@@ -43,6 +44,8 @@ public:
 	const int& getHp() const;
 	const int& getHpMax() const;
 
+	
+
 
 	//Modifiers
 	void setPozycja(const sf::Vector2f poz);
@@ -51,6 +54,8 @@ public:
 	void setHp(const int hp);
 	void loseHp(const int value);
 
+	void setReload(const float a);
+	void setSpeed(const float speed);
 
 
 					//Funkcje

@@ -19,20 +19,29 @@ Menu::Menu(float width, float height)
 	this->Tytol.setString(" SPACE \nSHOOTER");
 	this->Tytol.setPosition(sf::Vector2f(width / 10, height /3));
 
+
+
 	this->menu_txt[0].setFont(font);
 	this->menu_txt[0].setFillColor(sf::Color::Yellow);
-	this->menu_txt[0].setString("==GRAJ==");
+	this->menu_txt[0].setString("==NOWA GRA==");
 	this->menu_txt[0].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL +1) * 1));
 
 	this->menu_txt[1].setFont(font);
 	this->menu_txt[1].setFillColor(sf::Color::White);
-	this->menu_txt[1].setString("==OPCJE==");
+	this->menu_txt[1].setString("==KONTYNUUJ==");
 	this->menu_txt[1].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL + 1) * 2));
+
 
 	this->menu_txt[2].setFont(font);
 	this->menu_txt[2].setFillColor(sf::Color::White);
-	this->menu_txt[2].setString("==WYJSCIE==");
+	this->menu_txt[2].setString("==OPCJE==");
 	this->menu_txt[2].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL + 1) * 3));
+
+	this->menu_txt[3].setFont(font);
+	this->menu_txt[3].setFillColor(sf::Color::White);
+	this->menu_txt[3].setString("==WYJSCIE==");
+	this->menu_txt[3].setPosition(sf::Vector2f(width / 1.5, height / (MAX_LICZBA_POL + 1) * 4));
+
 
 	wybrane = 0;
 }

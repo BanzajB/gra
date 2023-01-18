@@ -15,7 +15,7 @@ using namespace sf;
 int main() {
 
 	srand(time(NULL));
-	setlocale(LC_CTYPE, "Polish");
+	//setlocale(LC_CTYPE, "Polish");
 	
 	//Init Game engine / Okno
 

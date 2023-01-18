@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#define MAX_LICZBA_POL 3
+#define MAX_LICZBA_POL 4
 
 class Menu
 {

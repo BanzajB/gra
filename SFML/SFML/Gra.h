@@ -4,11 +4,17 @@
 #include<map>
 #include<string>
 #include<sstream>
+#include<fstream>
+#include<iostream>
+
 #include"gracz.h"
 #include"Pocisk.h"
 #include"Przeciwnik.h"
 #include"Menu.h"
 #include"Exit.h"
+#include"Opcje.h"
+#include"Tryb.h"
+#include"Pilk.h"
 
 
 // Okno jako klasa / game engine
@@ -16,6 +22,7 @@
 
 using namespace sf;
 
+const int MAX_USERS = 3;
 
 class Gra
 {
@@ -56,14 +63,47 @@ private:
 	//bool wcisk();
 	int pozycja = 0;
 	Menu*menu;
+	
 
 	//Help
 	Text Help_txt;
 
 	//Exit
 	Exit* exit;
-						//Gracz (wskaŸnik)
+
+	//Opcje
+	Opcje* opcje;
+				
+
+
+
+	//Plik
+	Plik* plik;
+
+	bool flag;
+
+
+	//struktura
+
+	struct User {             
+		std::string name;
+		unsigned pkt;
+		int Hp;
+		//int pozm;
+	};
+
+	User users[MAX_USERS];
+
+	//Trudnosc
+	Tryb* tryb;
+	int poziom;
+	
+
+	//Gracz (wskaŸnik)
 	gracz* player;
+
+
+
 
 					// GUI gracza -  ¿ycie
 	sf::RectangleShape playerHpBar;
@@ -75,7 +115,8 @@ private:
 	float spawnTimer;
 	float spawnTimerMax;
 	std::vector<Przeciwnik*> przeciwnicy;    //wektor by mieæ kilku przeciwników
-
+	
+	
 	
 	
 
@@ -100,11 +141,21 @@ public:
 
 	//Funkcje
 
+
+	//Plik
+	void zapisStruct(int nr);
+	void pobranieStruct(int nr);
+
+	void zapis(User users[], int nr, std::string file );
+	void odczyt(User users[], int nr, std::string file);
 	
 	void run();
 
 	void pollEvents();
 	//void cooldown(int seconds);
+
+
+	//update
 	void updateEvents();
 	void updateInput();
 
@@ -114,11 +165,22 @@ public:
 
 	void updatePociski();
 	void updatePrzeciwnicy();
+
+	void updateMenu();
+	void updateExit();
+	void updateOpcje();
+	void updatePlik();
+	void updateTryb();
+
 	void update();
 
-	
+	//render
 	void renderMenu();
+	void renderHelp();
 	void renderExit();
+	void renderOpcje();
+	void renderPlik();
+	void renderTryb();
 
 	void renderGUI();
 	void renderTlo();
